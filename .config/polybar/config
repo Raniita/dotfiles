@@ -1,0 +1,226 @@
+## Polybar Config TowerPC
+
+#Power saving
+[settings]
+throttle-output = 20
+throttle-output-for = 40
+throttle-input-for = 120
+screenchange-reload = true
+
+#Evil Scheming
+[colors]
+background = ${xrdb:color0:#000}
+background-alt = #444
+foreground = ${xrdb:color7:#eee}
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+# Main and only bar
+[bar/Bar]
+modules-left = filesystem memory temp-cpu temp-gpu cpu
+modules-center = bspwm 
+modules-right = eth player-mpris-simple pulseaudio date  
+tray-position = right 
+
+font-0 = Terminus(TTF):size=9;4
+font-1 = FontAwesome5Free:style=solid:size=8;4
+font-2 = FontAwesome5Brands:style=solid:size=8;4
+font-3 = Dejavu:size=9;4
+
+bottom = true
+fixed-center = true
+wm-restack = bspwm
+height = 20
+
+line-size = 1
+overline-size = 1
+underline-size = 1
+
+border-top-size = 0
+border-top-color = #fff
+
+padding-left = 2
+padding-right = 1
+
+module-margin = 1
+
+separator = |
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+[module/title]
+type = internal/xwindow
+
+label-maxlen = 30
+
+[module/battery]
+type = internal/battery
+full-at = 95
+
+battery = BAT0
+adapter = AC0
+
+poll-interval = 5
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+#format-discharging = <ramp-capacity>
+
+format-full = <ramp-capacity> <label-full>
+
+label-charging =  %percentage%%
+label-discharging = %percentage%%
+
+label-full = 100% 
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 =  
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 =   
+
+animation-charging-framerate = 750
+
+[module/filesystem]
+type = internal/fs
+interval = 120
+
+mount-0 = /
+label-mounted =  %free%
+
+[module/memory]
+type = internal/memory
+interval = 5
+
+label =  %percentage_used%% 
+
+[module/bspwm]
+type = internal/bspwm
+
+enable-scroll = false
+
+#Focused workspace
+label-focused = %name%
+label-focused-background = #ee333333
+label-focused-overline= ${colors.foreground}
+label-focused-padding = 2
+
+#Unfocused, but used workspace
+label-occupied = %name%
+label-occupied-foreground = #aaa
+label-occupied-padding = 2
+
+#Workspace with an urgent window (rare!)
+label-urgent = %name%
+label-urgent-background = #bd2c40
+label-urgent-padding = 2
+
+#Empty workspace. No %name% for i3 mode
+label-empty = %name%
+label-empty-foreground = #55
+label-empty-padding = 2
+
+[module/temp-cpu]
+type = internal/temperature
+interval = 3
+thermal-zone = 2
+warn-temperature = 85
+
+format = <label>
+format-warn = <label-warn>
+
+label =  CPU %temperature-c%
+label-warn = %{F#f00}%{F-} %temperature-c%
+
+[module/temp-gpu]
+type = internal/temperature
+interval = 1
+hwmon-path = /sys/class/graphics/fb0/device/hwmon/hwmon3/temp1_input
+
+warn-temperature = 85
+
+format = <label>
+format-warn = <label-warn>
+
+label =  GPU %temperature-c%
+label-warn = %{F#f00}%{F-} %temperature-c%
+
+[module/cpu]
+type = internal/cpu
+interval = 3
+
+format = <ramp-coreload>
+
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = %{F#f00}█%{F-}	
+
+[module/wireless-network]
+type = internal/network
+interface = wlo1
+interval = 5
+
+label-connected =  %essid% %local_ip%  %downspeed%  %upspeed%
+label-disconnected =    
+
+[module/eth]
+type = internal/network
+interface = enp3s0
+interval = 5
+
+label-connected =   %local_ip%  %downspeed%  %upspeed%
+
+[module/date]
+type = internal/date
+date =  " %a %d %b %H:%M" 
+interval = 10
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <ramp-volume><label-volume>
+
+label-volume = %percentage%%
+label-muted =  Muted
+
+ramp-volume-0 = " "
+ramp-volume-1 = " "
+ramp-volume-2 = " "
+
+ramp-headphones-0 = 
+
+[module/backlight]
+type = internal/xbacklight
+
+enable-scroll = true
+
+format = <ramp> <label>
+label = %percentage%%
+
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
+
+[module/player-mpris-simple]
+type = custom/script
+exec = ~/polybar-scripts/player-mpris-simple.sh
+interval = 3
+click-left = playerctl previous
+click-right = playerctl next
+click-middle = playerctl play-pause
