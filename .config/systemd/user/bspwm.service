@@ -1,0 +1,10 @@
+[Unit]
+Description=Bspwm
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bspwm 
+
+[Install]
+RequiredBy=user-graphical.target
+

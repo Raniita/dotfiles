@@ -1,0 +1,10 @@
+[Unit]
+Description=Polybar
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/polybar Bar -r 
+
+[Install]
+WantedBy=user-graphical.target
+

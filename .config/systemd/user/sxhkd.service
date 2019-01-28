@@ -1,0 +1,10 @@
+[Unit]
+Description=Hotkey listener
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/sxhkd
+
+[Install]
+WantedBy=user-graphical.target
+

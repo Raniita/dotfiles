@@ -1,0 +1,4 @@
+[Unit]
+Description=User started their X session successfully
+Requires=default.target
+After=default.target
