@@ -1,0 +1,141 @@
+{
+    "layer": "top", 
+    "position": "bottom",
+    "height": 20, 
+    "modules-left": [ "battery", "custom/storage#root", "custom/storage#hdd", "custom/storage#nas", "memory", "cpu", "sway/mode", "temperature#cpu", "temperature#gpu", "idle_inhibitor" ],
+    "modules-center": ["sway/workspaces"],
+    "modules-right": [ "custom/mediaplayer", "custom/pacman", "pulseaudio", "backlight", "network", "clock", "tray"],
+
+     "sway/workspaces": {
+         "disable-scroll": false,
+         "all-outputs": false,
+         "format": "{icon}",
+         "format-icons": {
+             "1: 1": "",
+             "2: 2": "",
+             "3: 3": "",
+             "4: 4": "",
+             "5: 5": "",
+             "6: 6": "",
+             "7: 7": " 1",
+             "8: 8": " 2",
+//             "9: 9": "3",
+//             "10: 10": "4",
+             "urgent": "",
+             "focused": "",
+             "default": ""
+         }
+     },
+    "battery": {
+      "bat": "BAT0",
+      "interval": 60,
+      "states": {
+        "warning": 20,
+        "critical": 5
+      },
+      "format": "{icon} {capacity}%",
+      "format-icons": ["", "", "", "", ""],
+      "max-length": 25
+    },
+    "tray": {
+        "icon-size": 22,
+        "spacing": 5
+    },
+    "clock": {
+	"format": " {:%a %d %b %H:%M}"
+    },
+    "cpu": {
+        "interval": 1,
+        "format": " {usage}%"
+    },
+    "memory": {
+        "interval": 60,
+        "format": " {}%",
+        "states": {
+            "warning": 80,
+            "critical": 95
+        }
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{icon} {percent}%",
+        "format-icons": ["", ""],
+        "on-scroll-up": "xbacklight -inc 5",
+        "on-scroll-down": "xbacklight -dec 5",
+        "smooth-scrolling-threshold": 6.0
+    },
+    "network": {
+        "interval": 1,
+        "format-wifi": " {essid} {ipaddr}/{cidr}",
+        "format-ethernet": " {ipaddr}/{cidr}",
+        "format-disconnected": "Disconnected ⚠",
+        "on-click": "alacritty -e nmtui"
+    },
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": " Muted",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "smooth-scrolling-threshold": 6.0
+    },
+    "temperature#cpu": {
+	"hwmon-path": "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input",
+	"critical-threshold": 80,
+	// "format-critical": "{temperatureC}°C ",
+	"format": " CPU: {temperatureC}°C"
+    },
+    "temperature#gpu": {
+        "hwmon-path": "/sys/class/drm/card0/device/hwmon/hwmon5/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C ",
+        "format": " GPU: {temperatureC}°C"
+    },
+    "custom/storage#root": {
+        "format": " / {}",
+        "interval": 60,
+        "exec": "df -h --output=avail / | tail -1 | sed 's/ //g'"
+    },
+    "custom/storage#hdd": {
+        "format": " /mnt/HDD/ {}",
+        "interval": 60,
+        "exec": "df -h --output=avail /mnt/HDD | tail -1 | sed 's/ //g'"
+    },
+    "custom/storage#nas": {
+        "format": " /mnt/shared/ {}",
+        "interval": 14400,
+        "exec": "df -h --output=avail /mnt/shared | tail -1 | sed 's/ //g'"
+    },
+    "custom/pacman": {
+        "format": "{}   ",
+        "interval": 3600,                   // every hour
+        "exec": "checkupdates | wc -l",       // # of updates
+        "exec-if": "exit 0"                  // always run; consider advanced run conditions
+    },
+    "custom/mediaplayer": {
+        "format": "{}",
+        "max-length": 40,
+        "exec": "~/.config/waybar/mediaplayer.sh",
+        "escape": true,
+        "on-click": "playerctl -p spotify play-pause",
+        "on-click-middle": "playerctl -p spotify previous",
+        "on-click-right": "playerctl -p spotify next",
+        "interval": 1
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    }
+}

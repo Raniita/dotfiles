@@ -1,4 +1,4 @@
-(cat .cache/wal/sequences)
+#(cat .cache/wal/sequences)
 
 neofetch --config /etc/neofetch/config.conf 
 
@@ -12,5 +12,4 @@ function chpwd(){
 }
 
 alias ls="ls -lah"
-
-
+alias yay="paru" 

@@ -1,0 +1,168 @@
+# Basic sway
+set $mod Mod4
+font "Terminus (TTF)" 11
+default_border none
+floating_modifier $mod
+focus_follows_mouse always
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# Programs
+bindsym $mod+Escape exit
+bindsym $mod+Return exec alacritty
+bindsym $mod+d exec nautilus -w
+#bindsym $mod+space exec wofi
+bindsym $mod+space exec nwggrid -o 0.5
+bindsym $mod+l exec swaylock -c 000000
+bindsym --release Print exec grim -g \"$(slurp)" - | wl-copy 
+
+# Media
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86Mail exec playerctl next
+bindsym XF86HomePage exec playerctl previous
+bindsym XF86MonBrightnessUp   exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+
+# WM stuff
+bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+q kill
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+bindsym $mod+f fullscreen toggle
+
+# toggle tiling / floating
+bindsym $mod+s floating toggle
+bindsym $mod+x split toggle
+bindsym $mod+m layout tabbed
+bindsym $mod+z layout toggle split
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1: 1"
+set $ws2 "2: 2"
+set $ws3 "3: 3"
+set $ws4 "4: 4"
+set $ws5 "5: 5"
+set $ws6 "6: 6"
+set $ws7 "7: 7"
+set $ws8 "8: 8"
+#set $ws9 "9: 9"
+#set $ws10 "10: 10"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+#bindsym $mod+9 workspace $ws9
+#bindsym $mod+10 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+#bindsym $mod+Shift+9 move container to workspace $ws9
+#bindsym $mod+Shift+10 move container to workspace $ws10
+
+# Attaching workspaces to outputs
+set $output-primary HDMI-A-1
+set $output-secondary DP-1
+output $output-primary mode 2560x1440@74.780Hz
+output $output-primary pos 0 0
+output $output-secondary mode 1920x1080@143.996Hz
+output $output-secondary pos 2560 200 
+
+workspace $ws1 output $output-primary $output-secondary
+workspace $ws2 output $output-secondary $output-primary
+workspace $ws3 output $output-primary $output-secondary
+workspace $ws4 output $output-secondary $output-primary 
+
+input type:touchpad {
+  natural_scroll enable
+  middle_emulation enable
+  tap enable
+  dwt disable
+}
+
+input type:keyboard {
+  xkb_layout "us"
+  xkb_variant "intl"
+}
+
+# Wallpapers
+output "*" background /home/rani/Pictures/Wallpapers/vaporwave-1920×1080.jpg fill
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+    swaybar_command waybar
+}
+
+# Desactivar touchscreen
+#input 1267:9385:ELAN0732:00_04F3:24A9 events disabled
+
+# Idle config
+exec swayidle -w \
+	timeout 700 'swaylock -f -c 000000' \
+	timeout 900 'swaymsg "output * dpms off"' \
+		resume 'swaymsg "output * dpms on"' \
+	before-sleep 'swaylock -f -c 000000'
+
+
+#
+# Apps
+#
+
+# Run on startup
+exec mako
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+#exec redshift
+
+# Assign apps to workspaces
+assign [app_id="firefox"] → $ws1
+assign [app_id="telegramdesktop"] → $ws2
+assign [class="code-oss"] → $ws3
+assign [class="Steam"] → $ws4
+#assign [class="Spotify"] → $ws6
+assign [class="discord"] → $ws5
+
+# Auto float apps
+for_window [app_id="gnome-calculator"] floating enable
+#for_window [class="^Gnome-commander$"] floating enable
+for_window [app_id="^mpv$"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+#for_window [class="^Thunar$"] floating enable
+for_window [class="^vlc$"] floating enable
+#for_window [title="Slack Call Minipanel"] floating enable
+for_window [title="Firefox - Sharing Indicator"] floating enable
+for_window [title="Friends List"] floating enable
+#for_window [name="Firefox — Sharing Indicator"] floating enable
+
+
+## Magic Fix Pablock DONT TOUCH
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOC

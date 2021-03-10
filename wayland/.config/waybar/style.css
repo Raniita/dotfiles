@@ -1,0 +1,46 @@
+* {
+    padding: 0 8px;
+    border: none;
+    border-radius: 0;
+    font-family: "Terminus (TTF)", "Font Awesome 5 Brands", "Font Awesome 5 Free Solid", "Font Awesome 5 Free";
+    font-size: 12px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: rgba(43, 48, 59, 0.5);
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+
+#workspaces button {
+    padding: 0 0px;
+    background-color: transparent;
+    color: #ffffff;
+    border-bottom: 3px solid rgba(43, 48, 59, 0.5);
+}
+
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: inherit;
+    border-bottom: 3px solid #ffffff;
+}
+
+#workspaces button.focused {
+    background-color: #64727D;
+    border-bottom: 3px solid #ffffff;
+}
+
+#workspaces button.urgent {
+    background-color: #eb4d4b;
+}
+
+#memory.critical {
+    background-color: #ee0000;
+}
+
+#memory.warning {
+    background-color: #ee5555;
+}
