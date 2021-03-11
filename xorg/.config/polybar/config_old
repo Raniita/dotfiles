@@ -19,9 +19,9 @@ alert = #bd2c40
 
 # Main and only bar
 [bar/Bar]
-modules-left = battery filesystem memory temp-cpu temp-gpu cpu #backlight
+modules-left = filesystem memory temp-cpu temp-gpu cpu
 modules-center = bspwm 
-modules-right = wireless-network eth updates pulseaudio date #player-mpris-simple 
+modules-right = eth player-mpris-simple pulseaudio date  
 tray-position = right 
 
 font-0 = Terminus(TTF):size=9;4
@@ -46,7 +46,7 @@ padding-right = 1
 
 module-margin = 1
 
-separator =  
+separator = |
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -95,7 +95,7 @@ type = internal/fs
 interval = 120
 
 mount-0 = /
-label-mounted =  %free%
+label-mounted =  %free%
 
 [module/memory]
 type = internal/memory
@@ -132,7 +132,7 @@ label-empty-padding = 2
 [module/temp-cpu]
 type = internal/temperature
 interval = 3
-thermal-zone = 0
+thermal-zone = 2
 warn-temperature = 85
 
 format = <label>
@@ -195,7 +195,7 @@ type = internal/pulseaudio
 format-volume = <ramp-volume><label-volume>
 
 label-volume = %percentage%%
-label-muted = 
+label-muted =  Muted
 
 ramp-volume-0 = " "
 ramp-volume-1 = " "
@@ -219,13 +219,8 @@ ramp-4 = 🌑
 
 [module/player-mpris-simple]
 type = custom/script
-exec = ~/.config/polybar/scripts/player-mpris-simple.sh
+exec = ~/polybar-scripts/player-mpris-simple.sh
 interval = 3
 click-left = playerctl previous
 click-right = playerctl next
 click-middle = playerctl play-pause
-
-[module/updates]
-type = custom/script
-exec = ~/.config/polybar/scripts/updates.sh
-interval = 600
